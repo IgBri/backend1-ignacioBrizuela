@@ -26,13 +26,13 @@ export class ProductManager{
 
             ProductManager.products = JSON.parse(readFile);
 
-            console.log("Initialize ejecutado");
+            //console.log("Productos recuperados");
         }catch(err){
-            console.log("Error en la lectura del archivo")
+            console.log("Error en la lectura del archivo");
         };
     };
 
-    addProduct = async (title, description, price, stock, category) => {
+    addProduct = async (title, description, price, stock, category, thumbnaill) => {
         await this.initialize();
 
         const createdProduct = {
@@ -43,10 +43,13 @@ export class ProductManager{
             price,
             stock,
             category,
-            status: true
+            status: true,
+            thumbnaill
         };
 
         const findProduct = ProductManager.products.find((product) => product.code === createdProduct.code);
+
+        console.log(createdProduct)
 
         if(findProduct === undefined){
             ProductManager.products.push(createdProduct);
@@ -55,7 +58,7 @@ export class ProductManager{
         }else {
             console.log("Error al cargar producto. CODIGO REPETIDO")
         }
-        console.log(ProductManager.products)
+        //console.log(ProductManager.products)
     };
 
     getProduct = async () => {
@@ -64,11 +67,11 @@ export class ProductManager{
     };
 
     getProductById = async(id) => {
-        const readFile = await fs.promises.readFile(this.path, "utf-8");
-        const jsonFile = JSON.parse(readFile);
-        const findProduct = jsonFile.find((product) => product.id === parseInt(id));
+        const data = await fs.promises.readFile(this.path, "utf-8");
+        const jsonFile = JSON.parse(data);
+        const filterProduct = jsonFile.filter((product) => product.id === parseInt(id));
 
-        return findProduct;
+        return filterProduct;
     };
 
     setProduct = async (id, title, description, price, stock, category) => {
@@ -104,8 +107,6 @@ export class ProductManager{
             const jsonData = JSON.parse(data);
 
             const deleteProduct = jsonData.filter((product) => product.id !== parseFloat(id));
-
-            console.log(deleteProduct)
 
             return await fs.promises.writeFile(this.path, JSON.stringify(deleteProduct))
         } catch (error) {

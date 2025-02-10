@@ -1,9 +1,10 @@
 import express from "express";
-import { ProductManager } from "../ProductManager.js";
+import { ProductManager } from "../class/ProductManager.js";
 
 
 const productsRouter = express.Router();
 const productManager = new ProductManager ("./src/data/products.json");
+
 
 productsRouter.post("/", async (req, res) => {
     const {title, description, price, stock, category} = req.body;
@@ -13,17 +14,21 @@ productsRouter.post("/", async (req, res) => {
     } else {
         const newProduct = await productManager.addProduct(title, description, price, stock, category);
 
+        //console.log(newProduct)
+
         res.status(200).send(newProduct)
     };
 });
 
 productsRouter.get("/", async (req, res) => {
-    await productManager.initialize();
     try {
+        await productManager.initialize();
         const data = await productManager.getProduct();
-        res.status(200).send(JSON.parse(data))
+        const jsonData = JSON.parse(data);
+        //console.log(jsonData)
+        res.status(200).send(jsonData)
     } catch (error) {
-        
+        console.error("Error al conectar")
     }
 });
 
@@ -32,8 +37,10 @@ productsRouter.get("/:pid", async (req, res) => {
 
     try {
         const getProductById = await productManager.getProductById(pid);
-        console.log(getProductById)
-        res.status(200).send(getProductById);
+        const jsonGetProductById = JSON.parse(getProductById);
+        //console.log(getProductById)
+        res.status(200).send(jsonGetProductById);
+
     } catch (error) {
         console.log("Error en la lectura")
     }
@@ -45,18 +52,20 @@ productsRouter.put("/:pid", async (req, res) => {
     try {
         const editProducts = await productManager.setProduct(pid, title, description, price, stock, category);
 
-        res.status(200).send(editProducts);
+        //res.status(200).send(editProducts);
+        res.render("index", {editProducts})
     } catch (error) {
         console.log(error);
     }
 })
 
-productsRouter.delete("/:pid", async (req, res) => {
+productsRouter.delete("/delete/:pid", async (req, res) => {
     const {pid} = req.params;
     try {
         const eliminatedProduct = await productManager.deleteProduct(pid);
-
-        res.status(200).send(eliminatedProduct);
+        console.log(eliminatedProduct)
+        //res.status(200).send(eliminatedProduct);
+        res.render("index", {eliminatedProduct})
     } catch (error) {
         console.log(error)
     }

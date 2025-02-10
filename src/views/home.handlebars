@@ -1,0 +1,27 @@
+<header>
+    <div>
+        <h1 class="title">Home</h1>
+    </div>
+</header>
+<div>
+    <section class="containerCardHome">
+        {{#each jsonProducts}}
+
+            <div class="card" >
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text">{{this.description}}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{this.price}}</li>
+                    <li class="list-group-item">{{this.stock}}</li>
+                    <li class="list-group-item">{{this.category}}</li>
+                </ul>
+                <div class="card-body">
+                    <span>Codigo de producto: {{this.code}}</span>
+                </div>
+            </div>
+        {{/each}}
+    </section>
+</div>

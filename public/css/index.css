@@ -1,0 +1,80 @@
+html {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+header {
+    height: 100px;
+}
+
+/*VISTA DE REAL TIME PRODUCTS*/
+.mainSection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-template-areas: "c1 c2 c2";
+}
+.containerForm {
+    grid-area: c1;
+}
+#formNewProduct {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+#containerProducts {
+    grid-area: c2;
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 5%;
+    height: 100%;
+    padding: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    box-shadow: 0px 0px 29px 8px rgba(0,0,0,0.75);
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.deleteButton {
+    margin-top: auto;
+}
+
+/*VISTA DE HOME*/
+
+.containerCardHome {
+    box-shadow: 0px 0px 29px 8px rgba(0,0,0,0.75);
+    border-radius: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+    padding: 10px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+/*.cardHome {
+    border: 3px outset brown;
+    padding: 10px;
+    border-radius: 10px;
+}
+.containerInfoCardHome {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.containerInfoPrice {
+    display: flex;
+    flex-direction: column;
+}
+.categoryProduct {
+    font-size: 20px;
+}
+*/
