@@ -7,27 +7,49 @@
     <section class="mainSection">
         <div class="containerForm">
             <form id="formNewProduct">
+                <input type="text" name="type" placeholder="Tipo de producto">
                 <input  type="text" name="title" placeholder="Ingresa el titulo del producto">
                 <input  type="text" name="description" placeholder="Ingresa la descripcion del producto">
-                <input  type="number" name="price" placeholder="Ingresa el precio del producto">
+                <input  type="number" name="monetaryValue" placeholder="Ingresa el precio del producto">
+                <select name="currency">
+                    <option value="ARS">ARS</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
                 <input  type="number" name="stock" placeholder="Ingresa el stock de productos disponibles">
                 <input  type="text" name="category" placeholder="Ingresa la categoria del producto">
 
                 <button type="submit">Agregar producto</button>
             </form>
         </div>
-        <div id="containerProducts">
-            <!--{{#each jsonProducts}}
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.title}}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{this.category}}</h6>
-                        <p class="card-text">{{this.description}}</p>
-                        <button data-id= {{this.id}} class="deleteButton">Eliminar producto</button>
-                    </div>
+        <div class="container">
+            {{#if products}}
+                <div id="containerProducts">
+                    {{#each products.docs}}
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{this.title}}</h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary">{{this.category}}</h6>
+                                <p class="card-text">{{this.description}}</p>
+                                <button data-id= {{this._id}} class="deleteButton">Eliminar producto</button>
+                            </div>
+                        </div>
+                    {{/each}}
                 </div>
-            {{/each}}-->
+                <div>
+                    <p>Pagina {{products.page}} de {{products.totalPages}}</p>
+
+                    {{#if products.hasPrevPage}}
+                    <a href="/realtimeproducts?page={{products.prevPage}}">Anterior</a>
+                    {{/if}}
+
+                    {{#if products.hasNextPage}}
+                    <a href="/realtimeproducts?page={{products.nextPage}}">Siguiente</a>
+                    {{/if}}
+                </div>
+            {{/if}}
         </div>
+
     </section>
 </div>
 <script src="/socket.io/socket.io.js"></script>

@@ -1,0 +1,18 @@
+<section class="individualProduct">
+    <div class="card text-center">
+        <div class="card-header">
+            {{findProduct.type}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{findProduct.title}}</h5>
+            <p class="card-text">{{findProduct.description}}</p>
+            <div>
+                <span>Precio: {{findProduct.price.currency}} {{findProduct.price.monetaryValue}}</span>
+                <span></span>
+            </div>
+        </div>
+        <div class="card-footer text-body-secondary">
+            <span>Stock disponible: {{findProduct.stock}}</span>
+        </div>
+    </div>
+</section>

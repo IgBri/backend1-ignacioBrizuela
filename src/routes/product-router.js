@@ -1,73 +1,55 @@
 import express from "express";
-import { ProductManager } from "../class/ProductManager.js";
-
+import Product from "../models/product.model.js";
 
 const productsRouter = express.Router();
-const productManager = new ProductManager ("./src/data/products.json");
-
 
 productsRouter.post("/", async (req, res) => {
-    const {title, description, price, stock, category} = req.body;
+    try {
+        const {type, title, description, price, stock, category} = req.body;
 
-    if(!title || !description || !price || !stock || !category){
-        res.status(400).send({message: "Error al cargar datos. Debe haber algun campo vacio."})
-    } else {
-        const newProduct = await productManager.addProduct(title, description, price, stock, category);
+        const newProduct = await Product.insertOne({type, title, description, price, stock, category});
 
-        //console.log(newProduct)
-
-        res.status(200).send(newProduct)
+        res.status(200).send({status: "success", payload: newProduct});
+    } catch (error) {
+        res.status(400).send(error.message)    
     };
 });
 
 productsRouter.get("/", async (req, res) => {
     try {
-        await productManager.initialize();
-        const data = await productManager.getProduct();
-        const jsonData = JSON.parse(data);
-        //console.log(jsonData)
-        res.status(200).send(jsonData)
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const sort = parseInt(req.query.sort)|| 1;
+        const query = req.query.query;
+        
+        const products = await Product.paginate({category: query}, {limit, page: page, sort: {"price monetaryValue": sort}, lean: true});
+        
+        res.status(200).send({status: "success", payload: products});
     } catch (error) {
-        console.error("Error al conectar")
+        res.status(500).send({status: "error", payload: error.message});
     }
 });
 
 productsRouter.get("/:pid", async (req, res) => {
-    const {pid} = req.params;
-
     try {
-        const getProductById = await productManager.getProductById(pid);
-        const jsonGetProductById = JSON.parse(getProductById);
-        //console.log(getProductById)
-        res.status(200).send(jsonGetProductById);
+        const {pid} = req.params;
+        const getProductById = await Product.findById(pid);
+    
+        res.status(200).send(getProductById);
 
     } catch (error) {
-        console.log("Error en la lectura")
+        res.status(500).send({status: "error", payload: error.message});  
     }
 });
 
-productsRouter.put("/:pid", async (req, res) => {
-    const {pid} = req.params;
-    const {title, description, price, stock, category} = req.body
-    try {
-        const editProducts = await productManager.setProduct(pid, title, description, price, stock, category);
-
-        //res.status(200).send(editProducts);
-        res.render("index", {editProducts})
-    } catch (error) {
-        console.log(error);
-    }
-})
-
 productsRouter.delete("/delete/:pid", async (req, res) => {
-    const {pid} = req.params;
     try {
-        const eliminatedProduct = await productManager.deleteProduct(pid);
-        console.log(eliminatedProduct)
-        //res.status(200).send(eliminatedProduct);
-        res.render("index", {eliminatedProduct})
+        const {pid} = req.params;
+        const eliminatedProduct = await Product.findByIdAndDelete(pid);
+        
+        res.status(200).send({eliminatedProduct});
     } catch (error) {
-        console.log(error)
+        res.status(400).send(error.message)    
     }
 })
 

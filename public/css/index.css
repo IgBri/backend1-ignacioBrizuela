@@ -1,8 +1,12 @@
 html {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 }
 header {
     height: 100px;
+}
+body {
+    height: auto;
 }
 
 /*VISTA DE REAL TIME PRODUCTS*/
@@ -11,6 +15,7 @@ header {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     grid-template-areas: "c1 c2 c2";
+    height: 100%;
 }
 .containerForm {
     grid-area: c1;
@@ -21,19 +26,25 @@ header {
     gap: 10px;
     padding: 10px;
 }
+.container {
+    grid-area: c2;  
+}
 #containerProducts {
-    grid-area: c2;
+    
     border-radius: 20px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto;
     gap: 5%;
     height: 100%;
     padding: 20px;
     margin-right: 20px;
     margin-left: 20px;
+    overflow: scroll;
     box-shadow: 0px 0px 29px 8px rgba(0,0,0,0.75);
 }
+
+
+
 .card-body {
     display: flex;
     flex-direction: column;
@@ -44,6 +55,32 @@ header {
 }
 
 /*VISTA DE HOME*/
+
+.generalContainer{
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+.containerHome {
+    width: 20%;
+}
+.containerHome div {
+    display: flex;
+    justify-content: center;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+#getIntoEcommerce {
+    border-radius: 20px;
+    letter-spacing: 2px;
+}
+
+.containerProducts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 .containerCardHome {
     box-shadow: 0px 0px 29px 8px rgba(0,0,0,0.75);
@@ -57,24 +94,27 @@ header {
     margin-left: 20px;
     margin-top: 20px;
 }
+.buttonsCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.buttonsCard button {
+    border-radius: 20px;
+    
+}
 
-/*.cardHome {
-    border: 3px outset brown;
-    padding: 10px;
-    border-radius: 10px;
+/*VISTA DE PRODUCTO INDIVIDUAL (products.handlebars)*/
+.individualProduct{
+    padding-right: 100px;
+    padding-bottom: 20px ;
+    padding-left: 100px;
+    padding-top: 20px ;
 }
-.containerInfoCardHome {
+
+/*VISTA DEL CARRITO (cart.handldebars)*/
+.viewCart {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
+    padding: 30px;
 }
-.containerInfoPrice {
-    display: flex;
-    flex-direction: column;
-}
-.categoryProduct {
-    font-size: 20px;
-}
-*/

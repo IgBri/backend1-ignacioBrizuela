@@ -4,7 +4,7 @@ const socket = io();
 const formNewProduct = document.getElementById("formNewProduct");
 const containerProducts = document.getElementById("containerProducts");
 
-formNewProduct.addEventListener("submit", (e) => {
+formNewProduct.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(formNewProduct);
@@ -14,9 +14,25 @@ formNewProduct.addEventListener("submit", (e) => {
         productData[key] = value;
     });
 
-    const {title, description, price, stock, category} = productData;
+    const {type, title, description, monetaryValue, currency, stock, category} = productData;
 
-    socket.emit("addProducts", {title, description, price, stock, category});
+    const product = {
+        type,
+        title,
+        description,
+        price: {monetaryValue: Number(monetaryValue), currency},
+        stock, 
+        category
+    };
+
+    const response = await fetch("/api/products",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product)
+    });
+    console.log(response)
+
+    socket.emit("addProducts", product);
 
     formNewProduct.reset();
 });
@@ -34,6 +50,7 @@ const addEventDeleted = () => {
 };
 
 socket.on("allProducts", (data) => {
+    console.log(data)
     containerProducts.innerHTML = ``;
 
     data.forEach( (product) => {
@@ -42,7 +59,7 @@ socket.on("allProducts", (data) => {
                                                 <h5 class="card-title">${product.title}</h5>
                                                 <h6 class="card-subtitle mb-2 text-body-secondary">${product.category}</h6>
                                                 <p class="card-text">${product.description}</p>
-                                                <button data-id= ${product.id}  class="deleteButton">Eliminar producto</button>
+                                                <button data-id= ${product._id}  class="deleteButton">Eliminar producto</button>
                                             </div>
                                         </div>`
         });
@@ -59,7 +76,7 @@ socket.on("addedProduct", (newProduct) => {
                                                 <h5 class="card-title">${product.title}</h5>
                                                 <h6 class="card-subtitle mb-2 text-body-secondary">${product.category}</h6>
                                                 <p class="card-text">${product.description}</p>
-                                                <button data-id= ${product.id}  class="deleteButton">Eliminar producto</button>
+                                                <button data-id= ${product._id}  class="deleteButton">Eliminar producto</button>
                                             </div>
                                         </div>`
         });

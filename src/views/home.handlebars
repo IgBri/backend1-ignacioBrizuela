@@ -3,25 +3,50 @@
         <h1 class="title">Home</h1>
     </div>
 </header>
-<div>
-    <section class="containerCardHome">
-        {{#each jsonProducts}}
 
-            <div class="card" >
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{this.title}}</h5>
-                    <p class="card-text">{{this.description}}</p>
+<div class="generalContainer">
+    <section class="containerHome">
+        <div>
+            <button id="getIntoEcommerce">Ingresar al ecommerce</button>
+        </div>
+    </section>
+    <section class="containerProducts">
+        <div class="containerCardHome">
+            {{#if filterProducts}}
+                {{#each filterProducts.docs}}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text">{{description}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">{{price.currency}} {{price.monetaryValue}}</li>
+                        <li class="list-group-item">{{stock}}</li>
+                        <li class="list-group-item">{{category}}</li>
+                    </ul>
+                    <div class="card-body">
+                        <span>Codigo de producto: {{_id}}</span>
+                    </div>
+                    <div class="buttonsCard">
+                        <button data-id={{this._id}} class="addToCart">Agregar al carrito</button>
+                        <button data-id={{this._id}} class="viewProduct">Ver detalles</button>
+                    </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">{{this.price}}</li>
-                    <li class="list-group-item">{{this.stock}}</li>
-                    <li class="list-group-item">{{this.category}}</li>
-                </ul>
-                <div class="card-body">
-                    <span>Codigo de producto: {{this.code}}</span>
+                {{/each}}
+                <div>
+                    <p>Pagina {{filterProducts.page}} de {{filterProducts.totalPages}}</p>
+
+                    {{#if filterProducts.hasPrevPage}}
+                    <a href="/?query={{query}}&page={{filterProducts.prevPage}}&limit={{limit}}&sort={{sort}}">Anterior</a>
+                    {{/if}}
+
+                    {{#if filterProducts.hasNextPage}}
+                    <a href="/?query={{query}}&page={{filterProducts.nextPage}}&limit={{limit}}&sort={{sort}}">Siguiente</a>
+                    {{/if}}
                 </div>
-            </div>
-        {{/each}}
+            {{/if}}
+        </div>
     </section>
 </div>
+
+<script src="js/home.js"></script>
